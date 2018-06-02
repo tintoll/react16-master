@@ -1,12 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 
+class ReturnType extends Component {
+  render(){
+    return "hello";  
+  };
+}
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        
-      </div>
+      <Fragment>
+        <span>returnType</span>
+        <ReturnType />
+      </Fragment>
     );
   }
 }
