@@ -35,7 +35,7 @@ class ErrorMaker extends Component {
   }
 }
 
-class App extends Component {
+const BoundryHOC = ProtectedComponent => class Boundry extends Component {
   state = {
     hasError :false
   }
@@ -48,12 +48,24 @@ class App extends Component {
 
   render() {
     const {hasError} = this.state;
+    if(hasError) {
+      return "Sorry Somting wlong"
+    } else {
+      return <ProtectedComponent />
+    }
+  }
+}
+
+const PErrorMaker = BoundryHOC(ErrorMaker);
+
+class App extends Component {
+  render() {
     return (
       <Fragment>
         <span>returnType</span>
         <ReturnType />
         <Potals />
-        { hasError ? 'Sorry Somting wlong': <ErrorMaker />}
+        <PErrorMaker />
       </Fragment>
     );
   }

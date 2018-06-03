@@ -170,3 +170,54 @@ class App extends Component {
 }
 ```
 
+
+
+### Higher Order Component(HOC)
+
+Error boundries 예제와 같이 예외처리를 해줄려면 매우 불편할수있다. 매 컴포넌트마다 `{ hasError ? 'Sorry Somting wlong': <ErrorMaker />}` 이런 처리를 해주어야 하기 때문이다. 
+
+HOC를 이용해서 이부분을 개선해보도록 하겠습니다.
+
+```javascript
+// HOC
+const BoundryHOC = ProtectedComponent => class Boundry extends Component {
+  state = {
+    hasError :false
+  }
+
+  componentDidCatch = () => {
+    this.setState({
+      hasError : true
+    })
+  }
+
+  render() {
+    const {hasError} = this.state;
+    if(hasError) {
+      return "Sorry Somting wlong"
+    } else {
+      return <ProtectedComponent />
+    }
+  }
+}
+
+const PErrorMaker = BoundryHOC(ErrorMaker);
+
+class App extends Component {
+  render() {
+    return (
+      <Fragment>
+        <span>returnType</span>
+        <ReturnType />
+        <Potals />
+        <PErrorMaker />
+      </Fragment>
+    );
+  }
+}
+
+export default BoundryHOC(App);
+```
+
+위와 같이 BoundryHOC 만들어서 컴포넌트들을 묶어 주면 에러가 났을때 예외에 대한 처리를 공통으로 처리할수 있다.
+
