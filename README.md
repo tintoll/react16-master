@@ -117,3 +117,56 @@ class App extends Component {
 
 위와같이 createPotal을 이용해서 변경해줄 엘리먼트를 선택하여 넣어주면된다. 
 
+
+
+### Error Boundries - componentDidCatch
+
+부모 컴포넌트에서 자식컴포넌트가 에러가 발생하면 앱이 죽어버린다. 
+
+이럴경우 componentDidCatch를 이용해서 앱이 죽지 않고 에러처리를 할수 있는 방법을 알아보자 
+
+```javascript
+class ErrorMaker extends Component {
+  state = {
+    friends : ['hong', 'kim', 'lii']
+  }
+  componentDidMount = () => {
+    // 값을 undefined로 만들어서 map함수를 호출하면 에러가난다.
+    setTimeout(() => {
+      this.setState({
+        friends : undefined
+      })
+    }, 2000);
+  }
+
+  render() {
+    const {friends } = this.state;
+    return friends.map(friend => ` ${friend} `);    
+  }
+}
+
+class App extends Component {
+  state = {
+    hasError :false
+  }
+  // componentDidCatch 안에서 에러를 찾고 	
+  componentDidCatch = (error, info) => {
+    this.setState({
+      hasError : true
+    })
+  }
+  // 에러가 발생했을때 예외처리르 해주면 됩니다.	
+  render() {
+    const {hasError} = this.state;
+    return (
+      <Fragment>
+        <span>returnType</span>
+        <ReturnType />
+        <Potals />
+        { hasError ? 'Sorry Somting wlong': <ErrorMaker />}
+      </Fragment>
+    );
+  }
+}
+```
+
