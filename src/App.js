@@ -1,5 +1,14 @@
 import React, { Component, Fragment } from 'react';
 
+import { createPortal } from "react-dom";
+class Potals extends Component {
+  render(){
+    return (
+      createPortal(<Message />, document.getElementById('touchme'))
+    )
+  }
+}
+const Message = () => "I'm Message";
 
 class ReturnType extends Component {
   render(){
@@ -12,6 +21,7 @@ class App extends Component {
       <Fragment>
         <span>returnType</span>
         <ReturnType />
+        <Potals />
       </Fragment>
     );
   }
