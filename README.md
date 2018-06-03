@@ -221,3 +221,51 @@ export default BoundryHOC(App);
 
 위와 같이 BoundryHOC 만들어서 컴포넌트들을 묶어 주면 에러가 났을때 예외에 대한 처리를 공통으로 처리할수 있다.
 
+
+
+### this.setState(null)을 활용하여 update하지 않기
+
+setState에 null을 넣으면 더이상 컴포넌트를 update하지 않는다. 간단히 예제를 만들어 보자
+
+```javascript
+import React, { Component } from 'react';
+
+
+const MAX_PIZZAS = 20;
+const eatPizza = (state,props) => {
+  const { pizzas } = state;
+  if(pizzas < MAX_PIZZAS) {
+    return {
+      pizzas : pizzas + 1
+    }
+  } else {
+    return null; // state를 널을 해주면 update를 하지않는다.
+  }
+}
+class Contorllered extends Component {
+  state = {
+    pizzas : 0
+  }
+  _handleClick = () => {
+    this.setState(eatPizza); // state를 관리하는 부분을 함수로 넘겨서 사용할수있다.
+  }
+  render() {
+    const { pizzas }  = this.state;
+    return (
+      <button onClick={this._handleClick}>{ 'i eaten ${pizzas} pizzs`}</button>
+    );
+  };  
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Contorllered />
+    );
+  }
+}
+
+export default App;
+
+```
+

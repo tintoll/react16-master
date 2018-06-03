@@ -1,72 +1,37 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
-import { createPortal } from "react-dom";
-class Potals extends Component {
-  render(){
+
+const MAX_PIZZAS = 20;
+const eatPizza = (state,props) => {
+  const { pizzas } = state;
+  if(pizzas < MAX_PIZZAS) {
+    return {
+      pizzas : pizzas + 1
+    }
+  } else {
+    return null; // state를 널을 해주면 update를 하지않는다.
+  }
+}
+class Contorllered extends Component {
+  state = {
+    pizzas : 0
+  }
+
+  render() {
+    const { pizzas }  = this.state;
     return (
-      createPortal(<Message />, document.getElementById('touchme'))
+      <button onClick={this._handleClick}>{ `i eaten ${pizzas} pizzs`}</button>
     )
   }
-}
-const Message = () => "I'm Message";
-
-class ReturnType extends Component {
-  render(){
-    return "hello";  
-  };
-}
-
-class ErrorMaker extends Component {
-  state = {
-    friends : ['hong', 'kim', 'lii']
-  }
-  componentDidMount = () => {
-    // 값을 undefined로 만들어서 map함수를 호출하면 에러가난다.
-    setTimeout(() => {
-      this.setState({
-        friends : undefined
-      })
-    }, 2000);
-  }
-
-  render() {
-    const {friends } = this.state;
-    return friends.map(friend => ` ${friend} `);    
+  _handleClick = () => {
+    this.setState(eatPizza); // state를 관리하는 부분을 함수로 넘겨서 사용할수있다.
   }
 }
-
-const BoundryHOC = ProtectedComponent => class Boundry extends Component {
-  state = {
-    hasError :false
-  }
-
-  componentDidCatch = () => {
-    this.setState({
-      hasError : true
-    })
-  }
-
-  render() {
-    const {hasError} = this.state;
-    if(hasError) {
-      return "Sorry Somting wlong"
-    } else {
-      return <ProtectedComponent />
-    }
-  }
-}
-
-const PErrorMaker = BoundryHOC(ErrorMaker);
 
 class App extends Component {
   render() {
     return (
-      <Fragment>
-        <span>returnType</span>
-        <ReturnType />
-        <Potals />
-        <PErrorMaker />
-      </Fragment>
+      <Contorllered />
     );
   }
 }
